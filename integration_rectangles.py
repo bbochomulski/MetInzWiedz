@@ -15,11 +15,8 @@ def integrate(f, a, b, n):
 
 
 def f(x):
-    return np.sin(x)
+    return x
 
 
 if __name__ == "__main__":
-    print("integrate(f, 0, 1, 10) =", integrate(f, 0, 10, 10))
-    print("integrate(f, 0, 1, 100) =", integrate(f, 0, 10, 100))
-    print("integrate(f, 0, 1, 1000) =", integrate(f, 0, 10, 1000))
-    print("integrate(f, 0, 1, 10000) =", integrate(f, 0, 10, 10000))
+    print("integrate(f, 0, 1, 10) =", integrate(f, 0, 1, 10000))

@@ -4,7 +4,7 @@ import random
 
 
 def func(x):
-    return x**2
+    return x
 
 
 def monte_casino(f, a, b, epsilon):
@@ -43,7 +43,7 @@ def trapezoid(f, a, b, n):
 def main():
     a = 0
     b = 10
-    epsilon = 0.05
+    epsilon = 0.001
     expected = trapezoid(func, a, b, 5000)
     print(f"expected: {expected}")
     area = monte_casino(func, a, b, epsilon)

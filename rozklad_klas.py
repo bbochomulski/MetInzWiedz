@@ -1,6 +1,7 @@
 import random
 import math
 import numpy as np
+from time import perf_counter
 
 
 def wczytaj(nazwa_pliku):
@@ -103,7 +104,8 @@ def zmiana_klasy(klasy_wektory, srodki_masy):
 
 
 if __name__ == '__main__':
-    ilosc_klas_decyzyjnych = 4
+    start = perf_counter()
+    ilosc_klas_decyzyjnych = 2
 
     wektory = wczytaj('australian.dat')
     klasy_wektory = przypisz_klasy(wektory, ilosc_klas_decyzyjnych)
@@ -127,3 +129,5 @@ if __name__ == '__main__':
 
     print("\nSuma: {}".format(suma))
     print("Ilosc iteracji: {}".format(iteracje))
+    stop = perf_counter()
+    print("Czas pracy: {:.2f}s".format(stop-start))

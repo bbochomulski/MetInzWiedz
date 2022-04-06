@@ -1,54 +1,64 @@
-from australian import readfile
+import numpy as np
+import pandas as pd
 
-australian = readfile("australian.dat")
 
-
-# oblicz srednia arytmetyczna ze wszystkich tablic zawartych w australian
-
-def srednia_arytmetyczna(obiekt):
+def srednia(wektor):
     """
-        obliczanie sredniej arytmetycznej danego obiektu
+    Obliczenie sredniej wektora
 
-        :param obiekt: obiekt
-        :return: srednia arytmetyczna elementow obiektu
+    :param wektor: wektor
+    :return: srednia
     """
+    wektor = np.array(wektor)
+    jednostkowa = np.array([1 for _ in range(len(wektor))])
+    return np.dot(wektor, jednostkowa) / len(wektor)
+
+
+def wariancja(wektor):
+    """
+        obliczanie wariancji elementow wektora
+
+        :param wektor: wektor
+        :return: wariancja elementow wektora
+    """
+    srednia_macierzy = srednia(wektor)
     suma = 0
-    for element in obiekt:
-        if isinstance(element, list):
-            suma += srednia_arytmetyczna(element)
-        elif isinstance(element, float) or isinstance(element, int):
-            return sum(obiekt) / len(obiekt)
-    return suma / len(obiekt)
+    for wartosc in wektor:
+        suma += (wartosc - srednia_macierzy) ** 2
+    return suma / len(wektor)
 
 
-# oblicz wariancje ze wszystkich tablic zawartych w australian
-
-def wariancja(macierz):
+def odchylenie_standardowe(wektor):
     """
-        obliczanie wariancji elementow macierzy
+        obliczanie odchylenia standardowego elementow wektora
 
-        :param macierz: macierz
-        :return: wariancja elementow macierz
+        :param wektor: wektor
+        :return: odchylenie standardowe elementow wektora
     """
-    srednia_macierzy = srednia_arytmetyczna(macierz)
-    suma = 0
-    for rekord in macierz:
-        suma += (srednia_arytmetyczna(rekord) - srednia_macierzy) ** 2
-    return suma / len(macierz)
+    return wariancja(wektor) ** 0.5
 
 
-# oblicz odchylenie standardowe ze wszystkich tablic zawartych w australian
+wektor_testowy = [1, 2, 3, 4, 5, 6]
 
-def odchylenie_standardowe(macierz):
-    """
-        obliczanie odchylenia standardowego elementow macierzy
+test = {
+    "Srednia": srednia(wektor_testowy),
+    "Wariancja": wariancja(wektor_testowy),
+    "Odchylenie standardowe": odchylenie_standardowe(wektor_testowy)
+}
 
-        :param macierz: macierz
-        :return: odchylenie standardowe elementow macierz
-    """
-    return wariancja(macierz) ** 0.5
+print(pd.DataFrame(data=test, index=[""]))
+
+#obliczanie "linii trendu"
+
+punkty = [(2, 1), (5, 2), (7, 3), (8, 3)]
+
+x = np.array([np.array([1 for _ in range(len(punkty))]), np.array([x[0] for x in punkty])])
+y = [y[1] for y in punkty]
+
+B = (np.dot(x,x)) ** -1
+
+print(B)
 
 
-print("Srednia arytmetyczna:\t{:.4f}".format(srednia_arytmetyczna(australian)))
-print("Wariancja:\t\t\t\t{:.4f}".format(wariancja(australian)))
-print("Odchylenie standardowe:\t{:.4f}".format(odchylenie_standardowe(australian)))
+
+# Beta = (Xt*x)^-1*Xt*y
