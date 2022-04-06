@@ -48,17 +48,20 @@ test = {
 
 print(pd.DataFrame(data=test, index=[""]))
 
-#obliczanie "linii trendu"
 
 punkty = [(2, 1), (5, 2), (7, 3), (8, 3)]
 
-x = np.array([np.array([1 for _ in range(len(punkty))]), np.array([x[0] for x in punkty])])
-y = [y[1] for y in punkty]
+x = np.array([[1, x[0]] for x in punkty])
+y = np.array([y[1] for y in punkty])
 
-B = (np.dot(x,x)) ** -1
-
-print(B)
-
-
+beta = np.dot(np.dot(np.linalg.inv(np.dot(x.T, x)), x.T), y)
+print(beta)
 
 # Beta = (Xt*x)^-1*Xt*y
+
+
+import matplotlib.pyplot as plt
+
+plt.plot([x[0] for x in punkty], [y[1] for y in punkty], 'ro')
+plt.plot([x[0] for x in punkty], [beta[0] + beta[1] * x[0] for x in punkty], 'b')
+plt.show()
