@@ -2,9 +2,10 @@ import numpy as np
 
 
 A = np.array([
-    [1, 0],
-    [1, 1],
-    [0, 1],
+    [1, 0, 1],
+    [1, 1, 0],
+    [0, 1, 0],
+    [1, 0, 1],
 ])
 
 
@@ -28,7 +29,6 @@ def qr_matrix(matrix):
         list_of_u_vectors.append(u_vector)
         list_of_e_vectors.append(u_vector/(np.sum(u_vector**2)**0.5))
 
-    print(list_of_e_vectors)
     Q = np.array(list_of_e_vectors).T[0]
     R = np.dot(Q.T, matrix)
 
@@ -38,6 +38,6 @@ def qr_matrix(matrix):
 Q, R = qr_matrix(A)
 
 print(f"A:\n{A}")
-print(f"Q:\n{Q}")
-print(f"R:\n{R}")
-print(f"QR:\n{np.round(np.dot(Q, R))}")
+print(f"Q:\n{np.round(Q, 4)}")
+print(f"R:\n{np.round(R, 4)}")
+print(f"QR:\n{np.dot(Q, R).astype(int)}")
