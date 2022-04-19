@@ -1,25 +1,43 @@
 import numpy as np
 
-A = np.array([[1, 0], [1, 1], [0, 1]])
 
-v1 = np.array([[x[0]] for x in A])
-v2 = np.array([[x[1]] for x in A])
+A = np.array([
+    [1, 0],
+    [1, 1],
+    [0, 1],
+])
 
-u1 = np.array([[1], [1], [0]])
-l1 = np.sqrt(np.dot(u1.T, u1))
-e1 = u1 / l1
 
-proj_u1_v2 = np.dot(v2.T, u1) / np.dot(u1.T, u1) * u1
+def qr_matrix(matrix):
+    """
+    Return the QR decomposition of a matrix
+    """
+    list_of_vectors = []
+    for i in range(matrix.shape[1]):
+        vector = np.array([[matrix[j][i]] for j in range(matrix.shape[0])])
+        list_of_vectors.append(vector)
 
-u2 = v2 - proj_u1_v2
+    list_of_u_vectors = []
+    list_of_e_vectors = []
 
-l2 = np.sqrt(np.dot(u2.T, u2))
-e2 = u2 / l2
+    for vector in list_of_vectors:
+        projections_sum = 0
+        for u_vector in list_of_u_vectors:
+            projections_sum += (np.dot(u_vector.T, vector)/np.dot(u_vector.T, u_vector))*u_vector
+        u_vector = vector - projections_sum
+        list_of_u_vectors.append(u_vector)
+        list_of_e_vectors.append(u_vector/(np.sum(u_vector**2)**0.5))
 
-Q = np.array([[e1[0], e2[0]], [e1[1], e2[1]], [e1[2], e2[2]]])
+    print(list_of_e_vectors)
+    Q = np.array(list_of_e_vectors).T[0]
+    R = np.dot(Q.T, matrix)
 
-R = Q.T @ A
+    return Q, R
 
-new_A = np.round(np.array([x[0] + x[1] for x in (Q * R)]))
-print(new_A)
 
+Q, R = qr_matrix(A)
+
+print(f"A:\n{A}")
+print(f"Q:\n{Q}")
+print(f"R:\n{R}")
+print(f"QR:\n{np.round(np.dot(Q, R))}")
